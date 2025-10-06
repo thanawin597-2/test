@@ -94,12 +94,13 @@
         </dependency>
     </dependencies>
 
-    <build>
+      <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <mainClass>com.dailycodework.lakeSide.hotel.LakeSideHotelApplication</mainClass> 
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
@@ -110,5 +111,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
