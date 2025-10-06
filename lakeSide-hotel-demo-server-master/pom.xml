@@ -100,7 +100,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.dailycodework.lakeSide.hotel.LakeSideHotelApplication</mainClass> 
+                    <mainClass>com.dailycodework.lakesidehotel</mainClass> 
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
