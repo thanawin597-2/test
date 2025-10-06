@@ -3,6 +3,6 @@ COPY . .
 RUN mvnw clean package -DskipTests 
 
 FROM openjdk:17-jdk-slim
-COPY --from=builder test/lakeSide-hotel-demo-server-master.jar
+COPY --from=builder /target/lakeSide-hotel-demo-server-master.jar
 EXPOSE 8080 
 ENTRYPOINT ["java", "-jar", "app.jar"]
