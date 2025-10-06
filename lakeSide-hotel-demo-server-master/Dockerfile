@@ -1,8 +1,8 @@
-FROM marven:3-eclipse-timurin-17 AS build
+FROM maven:3.8.5-openjdk-17 AS build
 COPY . .
-RUN ./mvnw clean package -DskipTests 
+RUN mvnw clean package -DskipTests 
 
-FROM eclipse-temurin:17-alphine
-COPY --from=builder /app/target/*.jar app.jar
+FROM openjdk:17-jdk-slim
+COPY --from=builder /app/target/lakeSide-hotel-demo-server-master.jar
 EXPOSE 8080 
 ENTRYPOINT ["java", "-jar", "app.jar"]
