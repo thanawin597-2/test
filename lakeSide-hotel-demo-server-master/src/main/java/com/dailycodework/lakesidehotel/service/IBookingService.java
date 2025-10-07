@@ -2,6 +2,8 @@ package com.dailycodework.lakesidehotel.service;
 
 import com.dailycodework.lakesidehotel.model.BookedRoom;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -20,4 +22,6 @@ public interface IBookingService {
     List<BookedRoom> getAllBookings();
 
     List<BookedRoom> getBookingsByUserEmail(String email);
+    
+    BigDecimal getTotalRevenue(LocalDate startDate, LocalDate endDate);
 }

@@ -7,6 +7,10 @@ import com.dailycodework.lakesidehotel.model.Room;
 import com.dailycodework.lakesidehotel.repository.BookingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /**
@@ -86,6 +90,25 @@ public class BookingService implements IBookingService {
                                 || (bookingRequest.getCheckInDate().equals(existingBooking.getCheckOutDate())
                                 && bookingRequest.getCheckOutDate().equals(bookingRequest.getCheckInDate()))
                 );
+    }
+    
+/////
+    @Override
+    public BigDecimal getTotalRevenue(LocalDate startDate, LocalDate endDate) {
+        List<BookedRoom> bookings = bookingRepository.findByCheckInDateBetween(startDate, endDate);
+        BigDecimal totalRevenue = BigDecimal.ZERO;
+
+        for (BookedRoom booking : bookings) {
+            Room room = roomService.getRoomById(booking.getRoom().getId()).orElse(null);
+            if (room != null) {
+                long nights = ChronoUnit.DAYS.between(booking.getCheckInDate(), booking.getCheckOutDate());
+                if (nights > 0) {
+                    BigDecimal bookingTotal = room.getRoomPrice().multiply(BigDecimal.valueOf(nights));
+                    totalRevenue = totalRevenue.add(bookingTotal);
+                }
+            }
+        }
+        return totalRevenue;
     }
 
 

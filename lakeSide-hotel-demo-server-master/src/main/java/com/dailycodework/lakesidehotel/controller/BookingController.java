@@ -9,12 +9,16 @@ import com.dailycodework.lakesidehotel.response.RoomResponse;
 import com.dailycodework.lakesidehotel.service.IBookingService;
 import com.dailycodework.lakesidehotel.service.IRoomService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,4 +98,32 @@ public class BookingController {
                 booking.getNumOfChildren(), booking.getTotalNumOfGuest(),
                 booking.getBookingConfirmationCode(), room);
     }
+    
+    @GetMapping("/revenue-summary")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getRevenueSummary(
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        BigDecimal totalRevenue = bookingService.getTotalRevenue(startDate, endDate);
+        return ResponseEntity.ok(new RevenueSummaryResponse(totalRevenue));
+    }
+
+    // Helper class สำหรับ response (เพิ่มในไฟล์นี้ หรือแยกไฟล์ใหม่)
+    public static class RevenueSummaryResponse {
+        private BigDecimal totalRevenue;
+
+        public RevenueSummaryResponse(BigDecimal totalRevenue) {
+            this.totalRevenue = totalRevenue;
+        }
+
+        public BigDecimal getTotalRevenue() {
+            return totalRevenue;
+        }
+
+        public void setTotalRevenue(BigDecimal totalRevenue) {
+            this.totalRevenue = totalRevenue;
+        }
+    }
+
+
 }
